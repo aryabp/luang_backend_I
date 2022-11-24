@@ -35,5 +35,5 @@ app.get('/',async(req,res)=>{
 })
 
 
-PORT = process.env.PORT || 1004
+PORT = process.env.PORT || 80
 app.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
