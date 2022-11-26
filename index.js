@@ -28,12 +28,12 @@ app.use('/',userRouter)
 
 app.get('/',async(req,res)=>{
     try{
-        res.send('Welcome Page')
+        res.status(200).send('Welcome Page')
     }catch (error){
         console.log(error)
     }
 })
 
 
-PORT = process.env.PORT || 80
+PORT = process.env.PORT || 8080
 app.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
