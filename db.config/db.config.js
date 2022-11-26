@@ -14,7 +14,10 @@ const db = new Client({
     user: DB_USER_DEV,
     password: DB_PASS_DEV,
     database: DB_NAME_DEV,
-    port: DB_PORT_DEV
+    port: DB_PORT_DEV,
+    ssl: {
+        rejectUnauthorized: false
+      }
 })
 
 module.exports = db
