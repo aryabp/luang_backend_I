@@ -10,11 +10,14 @@ SECRET = process.env.SECRET
 const register = async (req,res,next) => {
     const {username,email,password} = req.body
     try{
-        const hash = await bcrypt.hash(password)
+        const hash = await bcrypt.hash(password,10)
         await db.query(`insert into unhan_modul_17 values (DEFAULT, $1, $2, $3)`,[username,email,hash])
         res.status(200).send('Data has been updated')
     }catch(err){
-        res.status(401).send('Invalid Input, require "username","email" and "password"')
+        if(err.code=="23505"){res.status(401).send(`username or email already taken, take another`)}else{
+            res.status(401).send(`Invalid Input, require "username","email" and "password"`)
+        }
+        
     }
 }
 
