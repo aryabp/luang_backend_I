@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors({
     origin: [
       'http://localhost:3000',
-      'https://modul-17-2-arya-bagaskara-pratama.vercel.app/'
+      'https://modul-17-2-arya-bagaskara-pratama.vercel.app'
     ],
     credentials: true,
     exposedHeaders: ['set-cookie']
