@@ -7,6 +7,7 @@ const userRouter = require('./router/router')
 const {Client} = require('pg')
 const bcrypt = require('bcrypt')
 const db = require('./db.config/db.config')
+const session = require('express-session')
 require('dotenv').config()
 
 db.connect((err)=>{
@@ -21,6 +22,16 @@ app.use(express.json())
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(session({
+    secret: 'wow very secret',
+    cookie: {
+        maxAge: 600000,
+        secure: true
+    },
+    saveUninitialized:false,
+    resave: false,
+    unset: 'destroy'
+}))
 app.use(cors({
     origin: [
       'http://localhost:3000',
