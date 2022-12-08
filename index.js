@@ -34,8 +34,7 @@ app.use(cors({
       'https://modul-17-2-arya-bagaskara-pratama.vercel.app',
       'https://localhost:3000',
       'https://luang.vercel.app',
-      'https://luang-aryabp.vercel.app',
-      'https://luang-tau.vercel.app'
+      'https://luang-orcin.vercel.app'
     ],
     credentials: true
 }))
