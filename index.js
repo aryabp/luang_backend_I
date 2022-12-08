@@ -21,12 +21,12 @@ db.connect((err)=>{
 app.use(express.json())
 app.use(bodyParser.json())
 app.use(cookieParser())
-app.use(bodyParser.urlencoded({extended:true}))
+
 app.use(session({
     secret: 'wow very secret',
     cookie: {
         maxAge: 600000,
-        secure: true
+        secure: false
     },
     saveUninitialized:false,
     resave: false,
@@ -42,7 +42,7 @@ app.use(cors({
     credentials: true,
     exposedHeaders: ['set-cookie']
 }))
-
+app.use(bodyParser.urlencoded({extended:true}))
 
 app.use('/',userRouter)
 
