@@ -78,6 +78,9 @@ const logout = async (req,res,next) => {
 
 const verify = async (req,res,next) =>{
     try{
+        const{token}=req.body
+        const verified = jwt.verify(token,SECRET)
+        /*
         const{email}=req.body
         const data = await db.query(`SELECT * from unhan_modul_17 where email=$1`,[email])
         const user = data.rows
@@ -86,7 +89,9 @@ const verify = async (req,res,next) =>{
             username:user[0].username,
             email:user[0].email,
             password:user[0].password
-        })
+        */
+       return res.status(200).json(verified)
+        
     }catch (err){
         console.log(err.message)
         return res.status(500).json({error:err})
