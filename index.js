@@ -26,7 +26,7 @@ db.connect((err)=>{
 
 app.use(express.json())
 app.use(bodyParser.json())
-app.use(cookieParser("secret"))
+app.use(cookieParser())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors({
     origin: [
@@ -48,7 +48,7 @@ app.get('/',async(req,res)=>{
         console.log(error)
     }
 })
-const server = https.createServer({key,cert},app)
+//const server = https.createServer({key,cert},app)
 
 PORT = process.env.PORT || 8081
 //server.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
