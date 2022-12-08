@@ -1,3 +1,10 @@
+const fs = require('fs');
+const key = fs.readFileSync("./cert/CA/localhost/localhost.decrypted.key");
+const cert = fs.readFileSync("./cert/CA/localhost/localhost.crt");
+const https = require('https')
+//Tambahan https localhost
+
+
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -7,7 +14,6 @@ const userRouter = require('./router/router')
 const {Client} = require('pg')
 const bcrypt = require('bcrypt')
 const db = require('./db.config/db.config')
-const session = require('express-session')
 require('dotenv').config()
 
 db.connect((err)=>{
@@ -20,18 +26,8 @@ db.connect((err)=>{
 
 app.use(express.json())
 app.use(bodyParser.json())
-app.use(cookieParser())
-
-app.use(session({
-    secret: 'wow very secret',
-    cookie: {
-        maxAge: 600000,
-        secure: false
-    },
-    saveUninitialized:false,
-    resave: false,
-    unset: 'destroy'
-}))
+app.use(cookieParser("secret"))
+app.use(bodyParser.urlencoded({extended:true}))
 app.use(cors({
     origin: [
       'http://localhost:3000',
@@ -39,10 +35,9 @@ app.use(cors({
       'https://localhost:3000',
       'https://luang.vercel.app'
     ],
-    credentials: true,
-    exposedHeaders: ['set-cookie']
+    credentials: true
 }))
-app.use(bodyParser.urlencoded({extended:true}))
+
 
 app.use('/',userRouter)
 
@@ -53,7 +48,8 @@ app.get('/',async(req,res)=>{
         console.log(error)
     }
 })
-
+const server = https.createServer({key,cert},app)
 
 PORT = process.env.PORT || 8081
-app.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
+server.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
+//app.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})

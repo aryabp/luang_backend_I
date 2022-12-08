@@ -43,7 +43,7 @@ const login = async (req,res,next) =>{
                         username: user[0].username,
                         password: user[0].password
                     },process.env.SECRET)
-                    res.cookie("JWT",token,{httpOnly: true, sameSite:"strict"}).status(200).json({
+                    res.cookie("JWT",token,{ expire: new Date() + 9999,httpOnly: true, sameSite:"strict", secure: true}).status(200).json({
                         id: user[0].id,
                         email: user[0].email,
                         username: user[0].username
