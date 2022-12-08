@@ -1,7 +1,7 @@
-const fs = require('fs');
-const key = fs.readFileSync("./cert/CA/localhost/localhost.decrypted.key");
-const cert = fs.readFileSync("./cert/CA/localhost/localhost.crt");
-const https = require('https')
+//const fs = require('fs');
+//const key = fs.readFileSync("./cert/CA/localhost/localhost.decrypted.key");
+//const cert = fs.readFileSync("./cert/CA/localhost/localhost.crt");
+//const https = require('https')
 //Tambahan https localhost
 
 
@@ -51,5 +51,5 @@ app.get('/',async(req,res)=>{
 const server = https.createServer({key,cert},app)
 
 PORT = process.env.PORT || 8081
-server.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
-//app.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
+//server.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
+app.listen(PORT, ()=>{console.log(`Application is running on ${PORT}`)})
