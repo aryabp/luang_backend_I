@@ -11,7 +11,7 @@ const register = async (req,res,next) => {
     const {username,email,password} = req.body
     try{
         const hash = await bcrypt.hash(password,10)
-        await db.query(`insert into unhan_modul_17 values (DEFAULT, $1, $2, $3)`,[username,email,hash])
+        await db.query(`insert into users values (DEFAULT, $1, $2, $3)`,[username,email,hash])
         res.status(200).send('Data has been updated')
     }catch(err){
         if(err.code=="23505"){res.status(401).send(`username or email already taken, take another`)}else{
@@ -24,7 +24,7 @@ const register = async (req,res,next) => {
 const login = async (req,res,next) =>{
     const {email,password}=req.body;
     try{
-        const data = await db.query(`SELECT * from unhan_modul_17 WHERE email = $1`,[email])
+        const data = await db.query(`SELECT * from users WHERE email = $1`,[email])
         const user = data.rows
         if(user.length == 0 ){
             res.status(400).json({
@@ -82,7 +82,7 @@ const verify = async (req,res,next) =>{
         const verified = jwt.verify(token,SECRET)
         /*
         const{email}=req.body
-        const data = await db.query(`SELECT * from unhan_modul_17 where email=$1`,[email])
+        const data = await db.query(`SELECT * from users where email=$1`,[email])
         const user = data.rows
         return res.status(200).json({
             id:user[0].id,
