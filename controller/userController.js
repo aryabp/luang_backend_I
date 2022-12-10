@@ -8,14 +8,14 @@ const bcrypt = require('bcrypt')
 SECRET = process.env.SECRET
 
 const register = async (req,res,next) => {
-    const {username,email,password} = req.body
+    const {username,email,password,status} = req.body
     try{
         const hash = await bcrypt.hash(password,10)
-        await db.query(`insert into users values (DEFAULT, $1, $2, $3)`,[username,email,hash])
+        await db.query(`insert into users values (DEFAULT, $1, $2, $3, $4)`,[username,email,hash,status])
         res.status(200).send('Data has been updated')
     }catch(err){
         if(err.code=="23505"){res.status(401).send(`username or email already taken, take another`)}else{
-            res.status(401).send(`Invalid Input, require "username","email" and "password"`)
+            res.status(401).send(`Invalid Input, require "username","email", "password","status">>'pembeli'`)
         }
         
     }
@@ -80,16 +80,6 @@ const verify = async (req,res,next) =>{
     try{
         const{token}=req.body
         const verified = jwt.verify(token,SECRET)
-        /*
-        const{email}=req.body
-        const data = await db.query(`SELECT * from users where email=$1`,[email])
-        const user = data.rows
-        return res.status(200).json({
-            id:user[0].id,
-            username:user[0].username,
-            email:user[0].email,
-            password:user[0].password
-        */
        return res.status(200).json(verified)
         
     }catch (err){
