@@ -11,7 +11,7 @@ const register = async (req,res,next) => {
     const {username,email,password,status} = req.body
     try{
         const hash = await bcrypt.hash(password,10)
-        await db.query(`insert into users values (DEFAULT, $1, $2, $3, $4)`,[username,email,hash,status])
+        await db.query(`insert into users values (DEFAULT, $1, $2, $3,'pembeli')`,[username,email,hash])
         res.status(200).send('Data has been updated')
     }catch(err){
         if(err.code=="23505"){res.status(401).send(`username or email already taken, take another`)}else{
