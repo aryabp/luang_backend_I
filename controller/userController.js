@@ -108,8 +108,8 @@ const otp = async (req, res, next) => {
                 port: 587,
                 secure: false,
                 auth: {
-                    user: 'luang-no-reply@outlook.com',
-                    pass: '!Luang123'
+                    user: process.env.SERVICE_MAIL,
+                    pass: process.env.SERVICE_PASS
                 }
             });
             //luang.services@outlook.com
