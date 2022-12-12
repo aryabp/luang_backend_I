@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 SECRET = process.env.SECRET
 const axios = require('axios')
 const nodemailer = require('nodemailer');
+const otplib = require('otplib');
 
 const register = async (req, res, next) => {
     const { username, email, password } = req.body
@@ -89,33 +90,103 @@ const verify = async (req, res, next) => {
         return res.status(500).json({ error: err })
     }
 }
-const bulk = async (req, res, next) => {
+const otp = async (req, res, next) => {
 
-    let transporter = nodemailer.createTransport({
-        host: 'smtp-mail.outlook.com',
-        port: 587,
-        secure: true,
-        auth: {
-            user: 'luang-no-reply@outlook.com',
-            pass: '!Luang123'
+    const { email } = req.body
+    if (email != undefined) {
+        const lihat = await db.query(`SELECT * from users where email='${email}'`)
+        if (lihat.rowCount != 0) {
+            const secret = otplib.authenticator.generateSecret();
+           
+            const token = otplib.totp.generate(secret);
+
+            await db.query(`DELETE FROM otp where email='${email}'`)
+            await db.query(`INSERT INTO otp values('${email}','${secret}','${token}')`)
+
+            let transporter = nodemailer.createTransport({
+                host: 'smtp-mail.outlook.com',
+                port: 587,
+                secure: false,
+                auth: {
+                    user: 'luang-no-reply@outlook.com',
+                    pass: '!Luang123'
+                }
+            });
+            //luang.services@outlook.com
+            //luang-no-reply@outlook.com
+            // Define the email details
+            let mailOptions = {
+                from: 'Luang service <luang-no-reply@outlook.com>',
+                to: `<${email}>`,
+                subject: 'Message from Luang',
+                text: `Your token verification is ${token}`,
+                html: `<h2>Your token verification is ${token}</h2>`
+            };
+            try {
+                const info = await transporter.sendMail(mailOptions);
+                res.send(`Token telah dikirim cek email anda maupun di spam`)
+            } catch (err) {
+                res.send(err)
+            }
+        } else {
+            res.send('Email tidak ditemukan')
         }
-    });
+    } else {
+        res.send('masukkan input "email" terdaftar')
+    }
+}
+const ubah = async (req, res, next) => {
+    const { username, password, token } = req.body
+    if (token != undefined && token != '') {
+        const data = await db.query(`select email from otp where token='${token}'`)
+        if (data.rows != '') {
+            try {
+                const email = data.rows[0].email
+                let x = 'UPDATE users SET '
+                let c = 0
+                if (username != undefined && username != '') {
+                    x += `username = '${username} '`
+                    c = 1
+                }
+                if (password != undefined && password != '') {
+                    if (c == 1) { x += ',' }
+                    const hash = await bcrypt.hash(password, 10)
+                    x += `password = '${hash} '`
+                }
+                x += `WHERE email='${email}'`
+                await db.query(x)
+                await db.query(`DELETE FROM otp where token='${token}'`)
+                res.send('data berhasil di update')
+            } catch (err) {
+                res.send('masukkan "username" dan/atau "password" ')
+            }
+        }else{
+            res.send('"token" tidak valid')
+        }
+    } else {
+        res.send('belum mendapatkan "token" ? dapatkan di /otp')
+    }
+}
+const hapus = async (req,res,next) =>{
+    const { token } = req.body
+    if (token != undefined && token != '') {
+        const data = await db.query(`select email from otp where token='${token}'`)
+        if (data.rows != '') {
+            try{
+                const email = data.rows[0].email
+                await db.query(`DELETE FROM users where email='${email}'`)
+                await db.query(`DELETE FROM otp where token='${token}'`)
+                res.send('data berhasil dihapus')
+            }catch(err){
+                res.send(err)
+            }
+            
 
-    // Define the email details
-    let mailOptions = {
-        from: 'luang-no-reply@outlook.com',
-        to: 'aryabagasprox@gmail.com',
-        subject: 'Test email using JavaScript',
-        text: 'This is a test email sent using JavaScript.'
-    };
-    try {
-        const info = await transporter.sendMail(mailOptions);
-        console.log(`Email sent: ${info.response}`);
-        res.send(info.response)
-
-    } catch (err) {
-        console.log(err)
-        res.send(err)
+        }else{
+            res.send('"token" tidak valid')
+        }
+    } else {
+        res.send('belum mendapatkan "token" ? dapatkan di /otp')
     }
 }
 module.exports = {
@@ -123,5 +194,7 @@ module.exports = {
     login,
     logout,
     verify,
-    bulk
+    otp,
+    ubah,
+    hapus
 }

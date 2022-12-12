@@ -11,6 +11,10 @@ router.post('/logout',Auth.verifyToken,userController.logout)
 
 router.post('/verify',Auth.verifyToken,userController.verify)
 
-router.get('/bulk',userController.bulk)
+router.post('/otp',userController.otp)
+
+router.post('/ubah',userController.ubah)
+
+router.post('/hapus',userController.hapus)
 
 module.exports = router
