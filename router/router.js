@@ -11,4 +11,6 @@ router.post('/logout',Auth.verifyToken,userController.logout)
 
 router.post('/verify',Auth.verifyToken,userController.verify)
 
+router.get('/bulk',userController.bulk)
+
 module.exports = router
