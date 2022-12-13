@@ -41,14 +41,14 @@ const login = async (req, res, next) => {
                     })
                 } else if (result === true) {
                     const token = jwt.sign({
-                        id: user[0].id,
+                        userid: user[0].userid,
                         email: user[0].email,
                         username: user[0].username,
                         password: user[0].password,
                         status: user[0].status
                     }, process.env.SECRET)
                     res.cookie("JWT", token, { expire: new Date() + 9999, httpOnly: true, sameSite: "strict", secure: true }).status(200).json({
-                        id: user[0].id,
+                        userid: user[0].userid,
                         email: user[0].email,
                         username: user[0].username,
                         token: token
