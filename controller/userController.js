@@ -104,8 +104,8 @@ const otp = async (req, res, next) => {
             await db.query(`INSERT INTO otp values('${email}','${secret}','${token}')`)
 
             let transporter = nodemailer.createTransport({
-                host: 'smtp-mail.outlook.com',
-                port: 587,
+                host: process.env.SERVICE_SMTP,
+                port: process.env.SERVICE_PORT,
                 secure: false,
                 auth: {
                     user: process.env.SERVICE_MAIL,
@@ -116,7 +116,7 @@ const otp = async (req, res, next) => {
             //luang-no-reply@outlook.com
             // Define the email details
             let mailOptions = {
-                from: 'Luang service <luang-no-reply@outlook.com>',
+                from: `Luang services <${process.env.SERVICE_MAIL}>`,
                 to: `<${email}>`,
                 subject: 'Message from Luang',
                 text: `Your token verification is ${token}`,
