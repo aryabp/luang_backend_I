@@ -17,4 +17,6 @@ router.post('/ubah',userController.ubah)
 
 router.post('/hapus',userController.hapus)
 
+router.post('/lupa',userController.lupa)
+
 module.exports = router

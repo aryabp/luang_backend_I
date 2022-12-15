@@ -190,8 +190,6 @@ const hapus = async (req, res, next) => {
             } catch (err) {
                 res.send(err)
             }
-
-
         } else {
             res.send('kode OTP tidak valid')
         }
@@ -200,6 +198,32 @@ const hapus = async (req, res, next) => {
     }
 }
 
+const lupa = async (req, res, next) => {
+    const { token } = req.body
+    if (token != undefined && token != '') {
+        try {
+            const data = await db.query(`select  * from users INNER JOIN  otp  ON users.email=otp.email where otp.token='${token}'`)
+            const tokenJWT = jwt.sign({
+                userid: data.rows[0].userid,
+                email: data.rows[0].email,
+                username: data.rows[0].username,
+                password: data.rows[0].password,
+                status: data.rows[0].status
+            }, process.env.SECRET)
+            res.status(200).json({
+                userid: data.rows[0].userid,
+                email: data.rows[0].email,
+                username: data.rows[0].username,
+                token: tokenJWT
+            })
+        } catch (err) {
+            res.send('Error')
+        }
+    } else {
+        res.send('belum mendapatkan "token" ? dapatkan di /otp')
+    }
+
+}
 
 module.exports = {
     register,
@@ -208,5 +232,6 @@ module.exports = {
     verify,
     otp,
     ubah,
-    hapus
+    hapus,
+    lupa
 }
