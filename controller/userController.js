@@ -14,7 +14,7 @@ const register = async (req, res, next) => {
     const { username, email, password } = req.body
     try {
         const hash = await bcrypt.hash(password, 10)
-        await db.query(`insert into users values (DEFAULT, $1, $2, $3,'pembeli')`, [username, email, hash])
+        await db.query(`insert into users values (DEFAULT, $1, $2, $3,'pembeli')`, [email, username, hash])
         res.status(200).send('Data has been updated')
     } catch (err) {
         if (err.code == "23505") { res.status(401).send(`username or email already taken, take another`) } else {
@@ -162,7 +162,7 @@ const ubah = async (req, res, next) => {
                 res.send('masukkan "username" dan/atau "password" ')
             }
         }else{
-            res.send('"token" tidak valid')
+            res.send('kode OTP tidak valid')
         }
     } else {
         res.send('belum mendapatkan "token" ? dapatkan di /otp')
@@ -184,7 +184,7 @@ const hapus = async (req,res,next) =>{
             
 
         }else{
-            res.send('"token" tidak valid')
+            res.send('kode OTP tidak valid')
         }
     } else {
         res.send('belum mendapatkan "token" ? dapatkan di /otp')
