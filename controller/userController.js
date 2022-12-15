@@ -165,8 +165,12 @@ const ubah = async (req, res, next) => {
                     password: user.rows[0].password,
                     status: user.rows[0].status
                 }, process.env.SECRET)
-                console.log(token)
-                res.send({ token: token })
+                res.status(200).json({
+                    userid: user.rows[0].userid,
+                    email: user.rows[0].email,
+                    username: user.rows[0].username,
+                    token: token
+                })
             } catch (err) {
                 res.send('masukkan "username" dan/atau "password" ')
             }
