@@ -19,4 +19,6 @@ router.post('/hapus',userController.hapus)
 
 router.post('/lupa',userController.lupa)
 
+router.get('/getcategory',userController.getcategory)
+
 module.exports = router

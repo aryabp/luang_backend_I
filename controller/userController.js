@@ -222,7 +222,15 @@ const lupa = async (req, res, next) => {
     } else {
         res.send('belum mendapatkan "token" ? dapatkan di /otp')
     }
+}
 
+const getcategory = async (req,res,next) =>{
+    try{
+        const lihat = await db.query(`SELECT * from category`)
+        res.send(lihat.rows)
+    }catch(err){
+        res.send(err)
+    }
 }
 
 module.exports = {
@@ -233,5 +241,6 @@ module.exports = {
     otp,
     ubah,
     hapus,
-    lupa
+    lupa,
+    getcategory
 }
