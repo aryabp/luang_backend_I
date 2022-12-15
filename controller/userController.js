@@ -158,7 +158,7 @@ const ubah = async (req, res, next) => {
                 await db.query(x)
                 await db.query(`DELETE FROM otp where token='${token}'`)
                 const user = await db.query(`SELECT * from users WHERE email = $1`, [email])
-                const token = jwt.sign({
+                const tokenJWT = jwt.sign({
                     userid: user.rows[0].userid,
                     email: user.rows[0].email,
                     username: user.rows[0].username,
@@ -169,7 +169,7 @@ const ubah = async (req, res, next) => {
                     userid: user.rows[0].userid,
                     email: user.rows[0].email,
                     username: user.rows[0].username,
-                    token: token
+                    token: tokenJWT
                 })
             } catch (err) {
                 res.send('masukkan "username" dan/atau "password" ')
