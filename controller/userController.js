@@ -98,7 +98,7 @@ const otp = async (req, res, next) => {
         const lihat = await db.query(`SELECT * from users where email='${email}'`)
         if (lihat.rowCount != 0) {
             const secret = otplib.authenticator.generateSecret();
-           
+
             const token = otplib.totp.generate(secret);
 
             await db.query(`DELETE FROM otp where email='${email}'`)
@@ -157,33 +157,42 @@ const ubah = async (req, res, next) => {
                 x += `WHERE email='${email}'`
                 await db.query(x)
                 await db.query(`DELETE FROM otp where token='${token}'`)
-                res.send('data berhasil di update')
+                const user = await db.query(`SELECT * from users WHERE email = $1`, [email])
+                const token = jwt.sign({
+                    userid: user.rows[0].userid,
+                    email: user.rows[0].email,
+                    username: user.rows[0].username,
+                    password: user.rows[0].password,
+                    status: user.rows[0].status
+                }, process.env.SECRET)
+                console.log(token)
+                res.send({ token: token })
             } catch (err) {
                 res.send('masukkan "username" dan/atau "password" ')
             }
-        }else{
+        } else {
             res.send('kode OTP tidak valid')
         }
     } else {
         res.send('belum mendapatkan "token" ? dapatkan di /otp')
     }
 }
-const hapus = async (req,res,next) =>{
+const hapus = async (req, res, next) => {
     const { token } = req.body
     if (token != undefined && token != '') {
         const data = await db.query(`select email from otp where token='${token}'`)
         if (data.rows != '') {
-            try{
+            try {
                 const email = data.rows[0].email
                 await db.query(`DELETE FROM users where email='${email}'`)
                 await db.query(`DELETE FROM otp where token='${token}'`)
                 res.send('data berhasil dihapus')
-            }catch(err){
+            } catch (err) {
                 res.send(err)
             }
-            
 
-        }else{
+
+        } else {
             res.send('kode OTP tidak valid')
         }
     } else {
