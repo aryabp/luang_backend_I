@@ -219,7 +219,6 @@ const lupa = async (req, res, next) => {
 const getcategory = async (req, res, next) => {
     try {
         const lihat = await urlServices.getcategory()
-        console.log(lihat)
         res.send(lihat.rows)
     } catch (err) {
         res.send(err)
