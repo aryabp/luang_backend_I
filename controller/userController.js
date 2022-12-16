@@ -240,7 +240,7 @@ const getcategory = async (req,res,next) =>{
 const getproduct = async (req,res,next) =>{
     try{
         const product = await db.query(`SELECT * from ((product a INNER JOIN profile b ON a.profileid = b.profileid ) INNER JOIN category c ON a.categoryid = c.categoryid)`)
-        res.send(product)
+        res.send(product.rows)
     }catch(err){
         res.send(err)
     }
