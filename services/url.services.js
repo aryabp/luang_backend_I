@@ -8,14 +8,14 @@ const login = async (email) => {
     return data.rows
 }
 const otp1 = async (email) => {
-    return db.query(`SELECT * from users where email='${email}'`)
+    return await db.query(`SELECT * from users where email='${email}'`)
 }
 const otp2 = async (email, secret, token) => {
     await db.query(`DELETE FROM otp where email='${email}'`)
     await db.query(`INSERT INTO otp values('${email}','${secret}','${token}')`)
 }
 const ubah1 = async (token) => {
-    return db.query(`select email from otp where token='${token}'`)
+    return await db.query(`select email from otp where token='${token}'`)
 }
 const ubah2 = async (x, token, email) => {
     await db.query(x)
