@@ -175,7 +175,7 @@ const ubah = async (req, res, next) => {
                 res.send('masukkan "username" dan/atau "password" ')
             }
         } else {
-            res.send('kode OTP tidak valid')
+            res.status(400).send('kode OTP tidak valid')
         }
     } else {
         res.send('belum mendapatkan "token" ? dapatkan di /otp')
