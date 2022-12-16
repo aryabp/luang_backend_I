@@ -239,7 +239,12 @@ const getcategory = async (req,res,next) =>{
 
 const getproduct = async (req,res,next) =>{
     try{
-        const product = await db.query(`SELECT * from ((product a INNER JOIN profile b ON a.profileid = b.profileid ) INNER JOIN category c ON a.categoryid = c.categoryid)`)
+        const {id} = req.body
+        let query = `SELECT * from ((product a INNER JOIN profile b ON a.profileid = b.profileid ) INNER JOIN category c ON a.categoryid = c.categoryid)`
+        if (id != undefined && ''){
+            query+= ` WHERE a.product = ${id}`
+        }
+        const product = await db.query(query)
         res.send(product)
     }catch(err){
         res.send(err)
