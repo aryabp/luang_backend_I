@@ -245,7 +245,7 @@ const getproduct = async (req,res,next) =>{
             query+= ` WHERE a.product = ${id}`
         }
         const product = await db.query(query)
-        res.send(product)
+        res.send(product.rows)
     }catch(err){
         res.send(err)
     }
