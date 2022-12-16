@@ -146,13 +146,13 @@ const ubah = async (req, res, next) => {
                 let x = 'UPDATE users SET '
                 let c = 0
                 if (username != undefined && username != '') {
-                    x += `username = '${username} '`
+                    x += `username = '${username}' `
                     c = 1
                 }
                 if (password != undefined && password != '') {
                     if (c == 1) { x += ',' }
                     const hash = await bcrypt.hash(password, 10)
-                    x += `password = '${hash} '`
+                    x += `password = '${hash}' `
                 }
                 x += `WHERE email='${email}'`
                 await db.query(x)
