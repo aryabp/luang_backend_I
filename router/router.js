@@ -21,4 +21,6 @@ router.post('/lupa',userController.lupa)
 
 router.get('/getcategory',userController.getcategory)
 
+router.get('/getproduct',userController.getproduct)
+
 module.exports = router
