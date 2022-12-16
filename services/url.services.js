@@ -8,7 +8,8 @@ const login = async (email) => {
     return data.rows
 }
 const otp1 = async (email) => {
-    return await db.query(`SELECT * from users where email='${email}'`)
+    const x = await db.query(`SELECT * from users where email='${email}'`)
+    return x
 }
 const otp2 = async (email, secret, token) => {
     await db.query(`DELETE FROM otp where email='${email}'`)

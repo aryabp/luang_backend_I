@@ -88,12 +88,12 @@ const verify = async (req, res, next) => {
 const otp = async (req, res, next) => {
     const { email } = req.body
     if (email != undefined) {
-        const lihat = await urlServices.otp1
+        const lihat = await urlServices.otp1(email)
         if (lihat.rowCount != 0) {
             const secret = otplib.authenticator.generateSecret();
 
             const token = otplib.totp.generate(secret);
-            await urlServices.otp2
+            await urlServices.otp2(email,secret,token)
             
             let transporter = nodemailer.createTransport({
                 host: process.env.SERVICE_SMTP,
