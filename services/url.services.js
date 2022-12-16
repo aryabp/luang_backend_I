@@ -38,7 +38,7 @@ const getcategory = async () => {
 }
 const getproduct = async (id) => {
     let query = `SELECT * from ((product a INNER JOIN profile b ON a.profileid = b.profileid ) INNER JOIN category c ON a.categoryid = c.categoryid)`
-    if (id != undefined && '') {
+    if (id != undefined && id != '') {
         query += ` WHERE a.product = ${id}`
     }
     const product = await db.query(query)
