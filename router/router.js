@@ -2,8 +2,9 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controller/userController')
 const Auth = require('../middleware/auth')
+const {urlValidation} = require('../validator')
 
-router.post('/register', userController.register)
+router.post('/register',urlValidation.cekemailvalid,userController.register)
 
 router.post('/login',userController.login)
 
