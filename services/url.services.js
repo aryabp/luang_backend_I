@@ -46,7 +46,8 @@ const getproduct = async (id) => {
     return product
 }
 const getpesan = async (userid) =>{
-    const x = await db.query(`SELECT * from pesanan a INNER JOIN product b ON a.productid = b.productid where userid = ${userid}`)
+    const x = await db.query(`SELECT * from pesanan where userid = ${userid}`)
+    console.log(x)
     return x.rows
 }
 const insertpesan = async(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja) =>{
