@@ -50,7 +50,8 @@ const getpesan = async (userid) =>{
     return x.rows
 }
 const insertpesan = async(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja) =>{
-    const x = await db.query(`INSERT INTO PESANAN(DEFAULT,${productid},${userid},${profileid},'${jumlah}','${foto_bukti_pembayaran}','${total_harga}','${file_kerja}')`)
+    console.log(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja)
+    await db.query(`INSERT INTO PESANAN values(DEFAULT,${productid},${userid},${profileid},'${jumlah}','${foto_bukti_pembayaran}','${total_harga}','${file_kerja}')`)
     return 'berhasil update'
 
 }

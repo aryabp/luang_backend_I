@@ -236,8 +236,9 @@ const getproduct = async (req, res, next) => {
 const insertpesan = async(req,res,next) =>{
     try{
         const {productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja} = req.body
-        const x = await urlServices.insertpesan(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja)
-        res.send (x)
+        
+        await urlServices.insertpesan(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja)
+        res.send ('data berhasil di masukkan')
     }catch(err){
         res.send('kirim data {productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja}')
     }
