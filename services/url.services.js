@@ -46,8 +46,7 @@ const getproduct = async (id) => {
     return product
 }
 const getpesan = async (userid) =>{
-    const x = await db.query(`SELECT * from pesanan where userid = ${userid}`)
-    console.log(x)
+    const x = await db.query(`SELECT * from pesanan a, product b where a.userid = ${userid}`)
     return x.rows
 }
 const insertpesan = async(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja) =>{
