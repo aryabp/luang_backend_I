@@ -51,7 +51,7 @@ const getpesan = async (userid) =>{
 }
 const insertpesan = async(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja) =>{
     const x = await db.query(`INSERT INTO PESANAN(DEFAULT,${productid},${userid},${profileid},'${jumlah}','${foto_bukti_pembayaran}','${total_harga}','${file_kerja}')`)
-    return x.rows
+    return 'berhasil update'
 
 }
 module.exports = {
