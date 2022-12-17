@@ -45,6 +45,15 @@ const getproduct = async (id) => {
     const product = await db.query(query)
     return product
 }
+const getpesan = async (userid) =>{
+    const x = await db.query(`SELECT * from pesanan where userid = ${userid}`)
+    return x.rows
+}
+const insertpesan = async(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja) =>{
+    const x = await db.query(`INSERT INTO PESANAN(DEFAULT,${productid},${userid},${profileid},'${jumlah}','${foto_bukti_pembayaran}','${total_harga}','${file_kerja}')`)
+    return x.rows
+
+}
 module.exports = {
     register,
     login,
@@ -56,5 +65,7 @@ module.exports = {
     hapus2,
     lupa,
     getcategory,
-    getproduct
+    getproduct,
+    getpesan,
+    insertpesan
 }

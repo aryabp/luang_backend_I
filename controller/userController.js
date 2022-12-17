@@ -233,7 +233,24 @@ const getproduct = async (req, res, next) => {
         res.send(err)
     }
 }
-
+const insertpesan = async(req,res,next) =>{
+    try{
+        const {productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja} = req.body
+        const x = await urlServices.insertpesan(productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja)
+        res.send (x)
+    }catch(err){
+        res.send('kirim data {productid,userid,profileid,jumlah,foto_bukti_pembayaran,total_harga,file_kerja}')
+    }
+}
+const getpesan = async(req,res,next) =>{
+    try{
+        const {userid} = req.body
+        const x = await urlServices.getpesan(userid)
+        res.send(x)
+    }catch(err){
+        res.send('kirim data "userid"')
+    }
+}
 module.exports = {
     register,
     login,
@@ -244,5 +261,7 @@ module.exports = {
     hapus,
     lupa,
     getcategory,
-    getproduct
+    getproduct,
+    insertpesan,
+    getpesan
 }
