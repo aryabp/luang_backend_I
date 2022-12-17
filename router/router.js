@@ -26,5 +26,5 @@ router.get('/getproduct',userController.getproduct)
 
 router.post('/insertpesan',userController.insertpesan)
 
-router.get('/getpesan',userController.getpesan)
+router.post('/getpesan',userController.getpesan)
 module.exports = router
